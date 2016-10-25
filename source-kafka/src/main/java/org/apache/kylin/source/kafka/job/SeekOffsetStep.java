@@ -17,8 +17,10 @@
  */
 package org.apache.kylin.source.kafka.job;
 
-import org.apache.kylin.source.kafka.KafkaConfigManager;
-import org.apache.kylin.source.kafka.util.KafkaClient;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kylin.cube.CubeInstance;
@@ -30,15 +32,14 @@ import org.apache.kylin.job.exception.ExecuteException;
 import org.apache.kylin.job.execution.AbstractExecutable;
 import org.apache.kylin.job.execution.ExecutableContext;
 import org.apache.kylin.job.execution.ExecuteResult;
+import org.apache.kylin.source.kafka.KafkaConfigManager;
 import org.apache.kylin.source.kafka.config.KafkaConfig;
+import org.apache.kylin.source.kafka.util.KafkaClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 /**
+ * Deprecated, not in use.
  */
 public class SeekOffsetStep extends AbstractExecutable {
 
@@ -62,7 +63,7 @@ public class SeekOffsetStep extends AbstractExecutable {
         }
 
         final Map<Integer, Long> cubeDescStart = cube.getDescriptor().getPartitionOffsetStart();
-        if (cube.getSegments().size() == 1 &&  cubeDescStart != null && cubeDescStart.size() > 0) {
+        if (cube.getSegments().size() == 1 && cubeDescStart != null && cubeDescStart.size() > 0) {
             logger.info("This is the first segment, and has initiated the start offsets, will use it");
             startOffsets = cubeDescStart;
         }
@@ -139,8 +140,6 @@ public class SeekOffsetStep extends AbstractExecutable {
 
             return new ExecuteResult(ExecuteResult.State.DISCARDED, "No new message comes");
         }
-
-
     }
 
 }
